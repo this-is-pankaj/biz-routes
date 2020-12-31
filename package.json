@@ -1,0 +1,26 @@
+{
+  "name": "biz-routes",
+  "version": "1.0.0",
+  "description": "router to be used by the biz-app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/this-is-pankaj/biz-routes.git"
+  },
+  "author": "pankaj gupta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/this-is-pankaj/biz-routes/issues"
+  },
+  "homepage": "https://github.com/this-is-pankaj/biz-routes#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.9"
+  }
+}
