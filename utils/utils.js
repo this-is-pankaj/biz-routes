@@ -1,3 +1,5 @@
+const uuidV4 = require('uuid');
+
 /**
  * Method to generate a consistent response structure for the APIs
  *
@@ -31,4 +33,12 @@ module.exports.crypto = {
         decrypted += decipher.final('utf8');
         return decrypted;
     }
+}
+
+const generateUUID = ()=>{
+    return uuidV4.v4();
+}
+
+module.exports.generateSessionToken = () => {
+    return this.crypto.encrypt(generateUUID());
 }

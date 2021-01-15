@@ -1,0 +1,56 @@
+{
+  "stjCd": "MHCG0866",
+  "lgnm": "CHARTERED INFORMATION SYSTEMS PRIVATE LIMITED",
+  "stj": "LAKADGANJ_504",
+  "dty": "Regular",
+  "adadr": [
+    {
+      "addr": {
+        "bnm": "Hari OM Plaza",
+        "st": "M. G. Road",
+        "loc": "Nr. National Park, Borivali East",
+        "bno": "110, Bldg. No. 3",
+        "stcd": "Maharashtra",
+        "dst": "",
+        "city": "",
+        "flno": "1st Floor",
+        "lt": "",
+        "pncd": "400066",
+        "lg": ""
+      },
+      "ntr": "Recipient of Goods or Services, Wholesale Business, Service Provision, Retail Business, Office / Sale Office"
+    }
+  ],
+  "cxdt": "",
+  "gstin": "27AACCC1596Q1Z2",
+  "nba": [
+    "Recipient of Goods or Services",
+    "Wholesale Business",
+    "Service Provision",
+    "Retail Business",
+    "Office / Sale Office"
+  ],
+  "lstupdt": "07/09/2019",
+  "rgdt": "01/07/2017",
+  "ctb": "Private Limited Company",
+  "pradr": {
+    "addr": {
+      "bnm": "Chartered House",
+      "st": "Nr. Lata Mangeshkar Park, Bhandara Road",
+      "loc": "Nagpur",
+      "bno": "12 NIT Layout",
+      "stcd": "Maharashtra",
+      "dst": "",
+      "city": "",
+      "flno": "",
+      "lt": "",
+      "pncd": "440035",
+      "lg": ""
+    },
+    "ntr": "Recipient of Goods or Services, Wholesale Business, Service Provision, Retail Business, Office / Sale Office"
+  },
+  "sts": "Active",
+  "tradeNam": "CHARTERED INFORMATION SYSTEM PVT. LTD.",
+  "ctjCd": "VH0101",
+  "ctj": "RANGE -I"
+}

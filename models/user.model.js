@@ -65,6 +65,10 @@ let UserSchema = new Schema({
             "rememberSession": {
                 type: Boolean,
                 default: false
+            },
+            "startTime": {
+                type: Date,
+                default: Date.now
             }
         }
     ]

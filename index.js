@@ -7,6 +7,7 @@ const config = require(`./config/${process.env.Node_ENV || 'local'}`);
 
 const routes = require('./routes');
 const getUserId = require('./utils/getUserId');
+const gstinDetails = require('./interface/gstin.interface');
 
 const http = require('http').Server(app);
 const port = config.port;
@@ -24,6 +25,13 @@ const options = {
   bufferMaxEntries: 0,
   useUnifiedTopology: true
 };
+
+const corsOptions = {
+  exposedHeaders: ['App-user-id', 'App-session-id', 'App-token-expiry'],
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 mongoose.connect(config.connectionString, options)
   .then(() => {
     console.log('Database is connected');
@@ -33,9 +41,11 @@ mongoose.connect(config.connectionString, options)
   });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cors());
+app.use(cors(corsOptions));
 
-app.use('/api', getUserId, routes.authRouter);
+app.use('/api/auth', getUserId, routes.authRouter);
+app.use('/api/user/profiles', getUserId, routes.profileRouter);
+app.use('/api/gstinInfo', getUserId, gstinDetails.getCompanyInfo);
 
 http.listen(port, ()=>{
     console.log("Server up and running on port ", port);

@@ -3,6 +3,7 @@ const express = require('express'),
     authenticationController = require('../controllers/authenticate.controller');
 
 authenticationRouter.post('/signup', authenticationController.signup);
-authenticationRouter.get('/login', authenticationController.login);
+authenticationRouter.post('/login', authenticationController.login);
+authenticationRouter.get('/loginStatus', authenticationController.isLoggedIn);
 
 module.exports = authenticationRouter;
