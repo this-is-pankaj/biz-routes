@@ -1,28 +1,40 @@
-const mongoose = require('mongoose');
+const { getProfilesByFilter } = require('../components/profile.component');
 const ProfileModel = require('../models/profile.model');
 const collectionName = 'profiles';
+const component = 'profileController';
 
 const utils = require('../utils/utils');
 
 const methods = {};
 
 // Fetch All the profiles associated with a particular user
-methods.showProfiles = (req, res) => {
+methods.showProfiles = async (req, res) => {
   const reqId = req.reqId;
   try {
-    const query = {
-      _id: req.userId
+    if(!req.userId) {
+      return utils.handleResponse(res, 400, 'Invalid user', null);
+    }
+    const fieldsToReturn = ["_id", "nick", "companyName", "gstin", "addresses"];
+    const q = {
+      userId: req.userId,
+      isActive: true
     };
 
-    ProfileModel.findOne(query)
-      .then((data) => {
-        console.log(data);
-        utils.handleResponse(res, 200, null, data);
-      })
+    const profileRes = await getProfilesByFilter(q, fieldsToReturn)
       .catch((err) => {
-        console.log(err);
+        console.log(`${component}.showProfiles.error`, reqId, err);
         utils.handleResponse(res, 500, err, null);
-      })
+      });
+
+    if(profileRes) {
+      if(!profileRes.length) {
+        utils.handleResponse(res, 204, null, profileRes);
+      }
+      else {
+        // Encrypt the outgoing profile IDs
+        utils.handleResponse(res, 200, null, profileRes);
+      }
+    }
   }
   catch(exc) {
     console.log(`${component}.showProfiles.exception`, reqId, exc);
@@ -41,6 +53,7 @@ methods.addProfile = (req, res) => {
       nick: req.body.nick,
       gstin: req.body.gstin,
       companyName: req.body.companyName,
+      credentials: req.body.credentials,
       addresses: [{             // Save a default Address received from the GST info API
         nick: 'default',
         ...req.body.address
@@ -50,9 +63,20 @@ methods.addProfile = (req, res) => {
     const profile = new ProfileModel(dataToBeSaved);
 
     profile.save()
-      .then((data) => {
+      .then(async (data) => {
         console.log(data);
-        utils.handleResponse(res, 200, null, data);
+        const fieldsToReturn = ["_id", "nick", "companyName", "gstin", "addresses"];
+        const q = {
+          userId,
+          isActive: true
+        };
+
+        const profileRes = await getProfilesByFilter(q, fieldsToReturn)
+          .catch((err) => {
+            console.log(`${component}.showProfiles.error`, reqId, err);
+            utils.handleResponse(res, 500, err, null);
+          });
+        utils.handleResponse(res, 200, null, profileRes);
       })
       .catch((err)=>{
         utils.handleResponse(res, 500, err, null);

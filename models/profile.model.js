@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const NameSchema = require('./components/name.model');
 const AddressSchema = require('./components/address.model');
+const credentialsModel = require('./components/credentials.model');
 
 const ProfileSchema = new Schema({
   "userId": {
@@ -21,25 +22,42 @@ const ProfileSchema = new Schema({
     type: String,
     required: true
   },
-  "contactPerson": {
-    ...NameSchema,
-    "email": {
-      type: String
-    },
-    "phone": {
-      type: String
-    },
-    "designation": {
-      type: String
-    }
-  },
+  // "contactPerson": {
+  //   ...NameSchema,
+  //   "email": {
+  //     type: String
+  //   },
+  //   "phone": {
+  //     type: String
+  //   },
+  //   "designation": {
+  //     type: String
+  //   }
+  // },
   "addresses": [ 
     {
-      ...AddressSchema,
-      "nick": {
-        type: String,
-        required: true
-      }
+      // ...AddressSchema,
+      // "nick": {
+      //   type: String,
+      //   required: true
+      // }
+      
+    }
+  ],
+  "credentials": {
+    "ewb": credentialsModel
+  },
+  "isActive": {
+    type: Boolean,
+    default: true
+  },
+  "createdOn": {
+    type: Date,
+    default: Date.now
+  },
+  "updatedOn": [
+    {
+      type: Date
     }
   ],
   "savedDocs": {

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { getProfilesByFilter } = require('../components/profile.component');
 const UserModel = require('../models/user.model');
 const collectionName = 'users';
 const expiry = {
@@ -77,7 +78,7 @@ methods.login = (req, res) => {
         };
         
         userCollection.findOne(query, fieldsToReturn)
-            .then((data) => {
+            .then(async (data) => {
                 if (data) {
                     const user = data.toObject();  // Convert the object to a mutable one.
                     user.id = utils.crypto.encrypt(user._id.toString());
@@ -90,6 +91,19 @@ methods.login = (req, res) => {
                         'App-token-expiry': Date.now()+expiry.default
                     });
                     delete user.sessions;
+
+                    const fieldsToReturn = ["_id", "nick", "companyName", "gstin", "addresses"];
+                    const q = {
+                        userId: utils.crypto.decrypt(user.id)
+                    }; 
+                    const profileRes = await getProfilesByFilter(q, fieldsToReturn)
+                        .catch((err) => {
+                            console.log(`${component}.getProfiles.error`, reqId, err);
+                            // Return blank array by default
+                            return [];
+                        });
+                    
+                    user.profiles = profileRes || [];
                     utils.handleResponse(res, 200, null, user);
                     // Push the session information to the user's active sessions array
                     data.sessions.push({
