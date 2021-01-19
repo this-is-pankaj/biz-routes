@@ -43,7 +43,7 @@ methods.showProfiles = async (req, res) => {
 }
 
 // Add a new Profile
-methods.addProfile = (req, res) => {
+methods.addProfile = async (req, res) => {
   const reqId = req.reqId;
   try {
     const userId = req.userId;  // Use the userId to add to the req.body
@@ -59,31 +59,67 @@ methods.addProfile = (req, res) => {
         ...req.body.address
       }]
     }; 
-    
-    const profile = new ProfileModel(dataToBeSaved);
 
-    profile.save()
-      .then(async (data) => {
-        console.log(data);
-        const fieldsToReturn = ["_id", "nick", "companyName", "gstin", "addresses"];
-        const q = {
-          userId,
-          isActive: true
-        };
+    const fieldsToReturn = ["_id", "nick", "companyName", "gstin", "addresses"];
+      const q = {
+        userId,
+        isActive: true
+      };
 
-        const profileRes = await getProfilesByFilter(q, fieldsToReturn)
-          .catch((err) => {
-            console.log(`${component}.showProfiles.error`, reqId, err);
-            utils.handleResponse(res, 500, err, null);
-          });
-        utils.handleResponse(res, 200, null, profileRes);
-      })
-      .catch((err)=>{
+    const profiles = await getProfilesByFilter(q, fieldsToReturn)
+      .catch((err) => {
+        console.log(`${component}.showProfiles.error`, reqId, err);
         utils.handleResponse(res, 500, err, null);
-      })
+      });
+
+    let match = null;
+
+    if(profiles && profiles.length) {
+      match = profiles.find((p) => {
+        return (p.gstin === dataToBeSaved.gstin || p.nick === dataToBeSaved.nick);
+      });
+    }
+    
+    console.log(`${component}.showProfiles.checkMatch`, reqId, match);
+
+    // If no match is found, proceed with saving the profile
+    // Else exit with proper message
+    if(match && match.gstin) {
+      utils.handleResponse(res, 400, 'Unable to save. Another Profile already exists with this GSTIN/ Nickname.', null);
+    }
+    else {
+      const profile = new ProfileModel(dataToBeSaved);
+
+      profile.save()
+        .then(async (data) => {
+          console.log(data);
+
+          const profileRes = await getProfilesByFilter(q, fieldsToReturn)
+            .catch((err) => {
+              console.log(`${component}.showProfiles.error`, reqId, err);
+              utils.handleResponse(res, 500, err, null);
+            });
+          utils.handleResponse(res, 200, null, profileRes);
+        })
+        .catch((err)=>{
+          utils.handleResponse(res, 500, err, null);
+        })
+    }
   }
   catch(exc) {
     console.log(`${component}.showProfiles.exception`, reqId, exc);
+    utils.handleResponse(res, 500, exc, null);
+  }
+}
+
+// Delete a profile. Make it inactive
+methods.deleteProfile = (req, res) => {
+  const reqId = req.reqId;
+  try {
+    console.log(`${component}.deleteProfiles.exception`, reqId, exc);
+  }
+  catch(exc) {
+    console.log(`${component}.deleteProfiles.exception`, reqId, exc);
     utils.handleResponse(res, 500, exc, null);
   }
 }
