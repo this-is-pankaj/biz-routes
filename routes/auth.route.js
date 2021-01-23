@@ -4,6 +4,7 @@ const express = require('express'),
 
 authenticationRouter.post('/signup', authenticationController.signup);
 authenticationRouter.post('/login', authenticationController.login);
+authenticationRouter.get('/logout', authenticationController.logout);
 authenticationRouter.get('/loginStatus', authenticationController.isLoggedIn);
 
 module.exports = authenticationRouter;
