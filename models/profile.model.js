@@ -45,7 +45,7 @@ const ProfileSchema = new Schema({
     }
   ],
   "credentials": {
-    "ewb": credentialsModel
+    "ewb": {}
   },
   "isActive": {
     type: Boolean,
