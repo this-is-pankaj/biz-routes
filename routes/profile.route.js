@@ -6,5 +6,6 @@ const ewbController = require('../controllers/ewb.controller');
 profileRouter.get('/', profileController.showProfiles);
 profileRouter.post('/newProfile', profileController.addProfile);
 profileRouter.get('/getEWBToken', ewbController.generateToken);
+profileRouter.post('/generateEWB', ewbController.generateNewEWB);
 
 module.exports = profileRouter;

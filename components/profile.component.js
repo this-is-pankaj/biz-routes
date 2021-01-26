@@ -34,7 +34,9 @@ module.exports.updateProfile = (profileId, updatedProfile, options) => {
       }
 
       if(!options) {
-        options = {};
+        options = {
+          new: true
+        };
       }
 
       const filter = {

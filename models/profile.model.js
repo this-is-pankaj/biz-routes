@@ -68,16 +68,17 @@ const ProfileSchema = new Schema({
   "generatedDocs": {
     "ewb": [
       {
-        "num": {
-          type: String
-        },
-        "url": {
-          type: String
-        },
-        "createdOn": {
-          type: Date,
-          default: Date.now
-        }
+        // Save the docNum, docDate, validity, alerts, pdf link
+        // "num": {
+        //   type: String
+        // },
+        // "url": {
+        //   type: String
+        // },
+        // "createdOn": {
+        //   type: Date,
+        //   default: Date.now
+        // }
       }
     ]
   }
